@@ -8,8 +8,11 @@ A [10 LOC](https://github.com/WebReflection/pg-tag/blob/master/esm/index.js) uti
 
 ```js
 const {Client} = require('pg');
-const pg = require('pg-tag')(new Client);
 
+const pg = require('pg-tag')(new Client);
+pg.client.connect();
+
+// returns result.rows[0]
 const user = await pg.get`
   SELECT
     id, name, address
@@ -19,7 +22,15 @@ const user = await pg.get`
     email = ${email}
 `;
 
+// returns result.rows
 const users = await pg.all`
+  SELECT *
+  FROM users
+  WHERE status = ${activeUser}
+`;
+
+// returns regular pg.query results
+await pg.query`
   SELECT *
   FROM users
   WHERE status = ${activeUser}
