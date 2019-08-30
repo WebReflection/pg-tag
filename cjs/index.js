@@ -1,11 +1,11 @@
 'use strict';
 const uid = '🐘' + Date.now();
 const re = new RegExp(uid, 'g');
-const filled = (tpl, i = 1) => tpl.join(uid).replace(re, () => '$' + i++);
-const rows = result => result.rows;
-const shift = result => rows(result).shift();
-module.exports = client => ({client,  // exported to allow pg.client.connect()
-  all: (tpl, ...values) => client.query(filled(tpl), values).then(rows),
-  get: (tpl, ...values) => client.query(filled(tpl), values).then(shift),
-  query: (tpl, ...values) => client.query(filled(tpl), values)
+const filled = (t, i = 1) =>
+  t.length === 1 ? t[0] : t.join(uid).replace(re, () => '$' + i++);
+module.exports = client => ({
+  client,  // exported to allow pg.client.connect()
+  all: (t, ...data) => client.query(filled(t), data).then($ => $.rows),
+  get: (t, ...data) => client.query(filled(t), data).then($ => $.rows.shift()),
+  query: (t, ...data) => client.query(filled(t), data)
 });

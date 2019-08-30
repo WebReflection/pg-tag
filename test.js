@@ -21,7 +21,6 @@ const exit = err => {
 query`
   SELECT *
   FROM users
-  WHERE email = ${'test@email.me'}
 `
   .then(result => {
     console.assert(result.rows.join(',') === '1,2,3', 'unexpected query result');
