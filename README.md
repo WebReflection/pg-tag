@@ -4,8 +4,6 @@
 
 <sup>**Social Media Photo by [Hu Chen](https://unsplash.com/@huchenme) on [Unsplash](https://unsplash.com/)**</sup>
 
-- - -
-
 A [10 LOC](https://github.com/WebReflection/pg-tag/blob/master/esm/index.js) utility to safely query [pg](https://www.npmjs.com/package/pg) via template literals.
 
 ```js
