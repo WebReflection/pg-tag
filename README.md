@@ -4,13 +4,12 @@
 
 <sup>**Social Media Photo by [Hu Chen](https://unsplash.com/@huchenme) on [Unsplash](https://unsplash.com/)**</sup>
 
-A [10 LOC](https://github.com/WebReflection/pg-tag/blob/master/esm/index.js) utility to safely query [pg](https://www.npmjs.com/package/pg) via template literals.
+A [tiny](https://github.com/WebReflection/pg-tag/blob/master/esm/index.js) utility to safely query [pg](https://www.npmjs.com/package/pg) via template literals.
 
 ```js
-const {Client} = require('pg');
+const {Pool} = require('pg');
 
-const pg = require('pg-tag')(new Client);
-pg.client.connect();
+const pg = require('pg-tag')(new Pool);
 
 // returns result.rows[0]
 const user = await pg.get`
@@ -35,4 +34,9 @@ await pg.query`
   FROM users
   WHERE status = ${activeUser}
 `;
+
+// execute a query without sanitizing it
+await pg.raw`SELECT * FROM ${'users'}`;
+
+pg.pool.end();
 ```
