@@ -1,8 +1,6 @@
 
 // example
 const pg = {
-  connect: () => Promise.resolve(pg),
-  release: () => {},
   query: (...args) => new Promise((resolve, reject) => {
     if (args[1].shift() === 'FAIL')
       reject();
