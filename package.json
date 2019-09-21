@@ -1,7 +1,7 @@
 {
   "name": "pg-tag",
   "version": "0.1.3",
-  "description": "A 10 LOC utility to safely query pg via template literals.",
+  "description": "A tiny utility to safely query pg via template literals.",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "scripts": {

@@ -1,6 +1,8 @@
 
 // example
 const pg = {
+  connect: () => Promise.resolve(pg),
+  release: () => {},
   query: (...args) => new Promise((resolve, reject) => {
     if (args[1].shift() === 'FAIL')
       reject();
@@ -9,14 +11,19 @@ const pg = {
   })
 };
 
-const {client, get, all, query} = require('.')(pg);
+const {pool, get, all, query, raw} = require('.')(pg);
 
-console.assert(client === pg, 'unexpected client');
+console.assert(pool === pg, 'unexpected pool');
 
 const exit = err => {
   console.log('✔ failure works: ' + !err);
   process.exit(!!err * 1);
 };
+
+raw`SELECT * FROM ${'users'}`.then(result => {
+  console.assert(result.rows.join(',') === '1,2,3', 'unexpected query result');
+  console.log('✔ raw works');
+});
 
 query`
   SELECT *
