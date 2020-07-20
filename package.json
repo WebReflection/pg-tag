@@ -2,9 +2,13 @@
   "name": "pg-tag",
   "version": "2.0.0",
   "description": "A tiny utility to safely query pg via template literals.",
-  "main": "cjs/index.js",
-  "module": "esm/index.js",
+  "main": "./cjs/index.js",
+  "module": "./esm/index.js",
   "type": "module",
+  "exports": {
+    "import": "./esm/index.js",
+    "default": "./cjs/index.js"
+  },
   "scripts": {
     "build": "ascjs --no-default esm cjs && npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
