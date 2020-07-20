@@ -18,6 +18,13 @@ const exit = err => {
   process.exit(!!err * 1);
 };
 
+try {
+  get`INSERT INTO table VALUES ($1)`;
+}
+catch (sqlInjection) {
+  console.log('✔ safe against SQL injections');
+}
+
 query`
   SELECT *
   FROM users
