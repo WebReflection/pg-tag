@@ -9,7 +9,7 @@ const pg = {
   })
 };
 
-const {pool, get, all, query, raw} = require('.')(pg);
+const {pool, get, all, query, raw} = require('../cjs')(pg);
 
 console.assert(pool === pg, 'unexpected pool');
 
@@ -17,11 +17,6 @@ const exit = err => {
   console.log('✔ failure works: ' + !err);
   process.exit(!!err * 1);
 };
-
-raw`SELECT * FROM ${'users'}`.then(result => {
-  console.assert(result.rows.join(',') === '1,2,3', 'unexpected query result');
-  console.log('✔ raw works');
-});
 
 query`
   SELECT *
@@ -36,7 +31,7 @@ query`
 get`
   SELECT *
   FROM users
-  WHERE email = ${'test@email.me'}
+  WHERE email = ${raw`test@email.me`}
 `
   .then(result => {
     console.assert(result === 1, 'unexpected get result');

@@ -4,11 +4,11 @@
   "description": "A tiny utility to safely query pg via template literals.",
   "main": "cjs/index.js",
   "module": "esm/index.js",
+  "type": "module",
   "scripts": {
-    "build": "npm run cjs && npm test",
-    "cjs": "echo \"'use strict';\" > cjs/index.js && cat esm/index.js | sed 's/export default/module.exports =/' >> cjs/index.js",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "test": "istanbul cover test.js"
+    "build": "ascjs --no-default esm cjs && npm test",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "test": "nyc node test/index.js"
   },
   "keywords": [
     "PostgreSQL",
@@ -20,8 +20,13 @@
   "author": "Andrea Giammarchi",
   "license": "ISC",
   "devDependencies": {
-    "coveralls": "^3.0.6",
-    "istanbul": "^0.4.5",
-    "pg": "^7.12.1"
+    "ascjs": "^4.0.1",
+    "coveralls": "^3.1.0",
+    "nyc": "^15.1.0",
+    "pg": "^8.3.0"
+  },
+  "dependencies": {
+    "plain-tag": "^0.1.2",
+    "static-params": "^0.1.3"
   }
 }

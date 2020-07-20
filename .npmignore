@@ -1,10 +1,5 @@
-coverage/
-img/
+.nyc_output/
 node_modules/
 test/
-_config.yml
-.DS_Store
-.gitignore
-.travis.yml
 package-lock.json
-test.js
+.travis.yml

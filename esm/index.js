@@ -1,10 +1,21 @@
-const uid = '🐘' + Date.now(), re = new RegExp(uid, 'g');
-const filled = (t, i) => t.join(uid).replace(re, () => '$' + i++);
-const query = (pool, t, data) =>
-  pool.query(t.length === 1 ? t[0] : filled(t, 1), data);
-export default pool => ({ pool, // in case it's needed to db.pool.end()
-  all: (t, ...data) => query(pool, t, data).then($ => $.rows),
-  get: (t, ...data) => query(pool, t, data).then($ => $.rows.shift()),
-  query: (t, ...data) => query(pool, t, data),
-  raw: (t, ...v) => query(pool, [t.reduce((p, c, i) => p + v[i - 1] + c)], [])
-});
+import plain from 'plain-tag';
+import {asStatic, asParams} from 'static-params';
+
+const create = (pool, $) => (tpl, ...values) => {
+  const [sql, ...params] = asParams(tpl, ...values);
+  return pool.query(sql.map(holes).join(''), params).then($);
+};
+
+const holes = (value, i) => (0 < i ? ('$' + i) : '') + value;
+
+const raw = (tpl, ...values) => asStatic(plain(tpl, ...values));
+
+export default function PGTag(pool) {
+  return {
+    all: create(pool, $ => $.rows),
+    get: create(pool, $ => $.rows.shift()),
+    query: create(pool, $ => $),
+    raw,
+    pool
+  };
+};

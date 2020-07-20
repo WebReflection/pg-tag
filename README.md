@@ -6,6 +6,8 @@
 
 A [tiny](https://github.com/WebReflection/pg-tag/blob/master/esm/index.js) utility to safely query [pg](https://www.npmjs.com/package/pg) via template literals.
 
+Available for [SQLite](https://github.com/WebReflection/sqlite-tag/#readme) too.
+
 ```js
 const {Pool} = require('pg');
 
@@ -35,8 +37,9 @@ await pg.query`
   WHERE status = ${activeUser}
 `;
 
-// execute a query without sanitizing it
-await pg.raw`SELECT * FROM ${'users'}`;
+// allow partial entries
+let x = 1;
+await pg.all`SELECT * FROM ${raw`table_${x}`}`;
 
 pg.pool.end();
 ```
