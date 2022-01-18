@@ -1,3 +1,4 @@
+import PGSql from '../esm/index.js';
 
 // example
 const pg = {
@@ -9,7 +10,7 @@ const pg = {
   })
 };
 
-const {pool, get, all, query, raw} = require('../cjs')(pg);
+const {pool, get, all, query, raw, transaction} = PGSql(pg);
 
 console.assert(pool === pg, 'unexpected pool');
 
@@ -49,7 +50,7 @@ get`
 all`
   SELECT *
   FROM users
-  WHERE email = ${'test@email.me'}
+  WHERE email IN (${['test@email.me']})
 `
   .then(result => {
     console.assert(result.join(',') === '1,2,3', 'unexpected all result');
@@ -63,3 +64,10 @@ get`
   WHERE email = ${'FAIL'}
 `
   .catch(exit);
+
+
+const populate = transaction();
+populate`INSERT INTO table VALUES (${1})`;
+populate`INSERT INTO table VALUES (${2})`;
+populate`INSERT INTO table VALUES (${3})`;
+populate.commit();
